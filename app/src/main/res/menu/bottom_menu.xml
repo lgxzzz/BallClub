@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/bottom_menu_news"
+        android:icon="@drawable/info"
+        android:title="球坛新闻"
+        />
+    <item android:id="@+id/bottom_menu_buy"
+        android:icon="@drawable/shibie"
+        android:title="购物商城"
+        />
+    <item android:id="@+id/bottom_menu_near"
+        android:icon="@drawable/bingchonghai"
+        android:title="周边动态"
+        />
+    <item android:id="@+id/bottom_menu_about"
+        android:icon="@drawable/bingchonghai"
+        android:title="我的信息"
+        />
+</menu>
