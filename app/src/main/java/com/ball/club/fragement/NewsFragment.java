@@ -23,15 +23,15 @@ import java.util.List;
 
 
 public class NewsFragment extends Fragment {
-    List<News> pestInfos = new ArrayList<>();
+    List<News> newsInfos = new ArrayList<>();
 
     ListView mMsgListview;
 
     NewsAdapter mAdapter;
 
-    EditText mPestSearchEd;
+    EditText mNewsSearchEd;
 
-    Button mPestSearchClearBtn;
+    Button mNewsSearchClearBtn;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,19 +54,19 @@ public class NewsFragment extends Fragment {
     public void initView(View view){
         mMsgListview = view.findViewById(R.id.search_info_list);
 
-        mPestSearchEd = view.findViewById(R.id.pest_search_ed);
+        mNewsSearchEd = view.findViewById(R.id.pest_search_ed);
 
-        mPestSearchClearBtn = view.findViewById(R.id.pest_search_clear_btn);
+        mNewsSearchClearBtn = view.findViewById(R.id.pest_search_clear_btn);
 
-        mPestSearchClearBtn.setOnClickListener(new View.OnClickListener() {
+        mNewsSearchClearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPestSearchEd.setText("");
+                mNewsSearchEd.setText("");
                 searchData();
             }
         });
 
-        mPestSearchEd.addTextChangedListener(new TextWatcher() {
+        mNewsSearchEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -85,23 +85,23 @@ public class NewsFragment extends Fragment {
     };
 
     public void initData() {
-        pestInfos = DBManger.getInstance(getContext()).getPestsByKey("");
-        mAdapter = new NewsAdapter(getContext(),pestInfos);
+        newsInfos = DBManger.getInstance(getContext()).getNewsByKey("");
+        mAdapter = new NewsAdapter(getContext(),newsInfos);
         mMsgListview.setAdapter(mAdapter);
 
     }
 
     //根据查询条件查询
     public void searchData(){
-        String value = mPestSearchEd.getEditableText().toString();
+        String value = mNewsSearchEd.getEditableText().toString();
         if (value.length()==0){
-            pestInfos = DBManger.getInstance(getContext()).getAllPests();
+            newsInfos = DBManger.getInstance(getContext()).getAllNews();
         }else{
-            pestInfos = DBManger.getInstance(getContext()).getPestsByKey(value);
+            newsInfos = DBManger.getInstance(getContext()).getNewsByKey(value);
         }
 
-        if (pestInfos.size()>0){
-            mAdapter.setData(pestInfos);
+        if (newsInfos.size()>0){
+            mAdapter.setData(newsInfos);
         }
     }
 

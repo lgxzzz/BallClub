@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import com.ball.club.bean.User;
 import com.ball.club.data.DBManger;
 import com.ball.club.fragement.AboutFragment;
-import com.ball.club.fragement.BuyFragment;
 import com.ball.club.fragement.NearFragment;
 import com.ball.club.fragement.NewsFragment;
 import com.ball.club.util.FragmentUtils;

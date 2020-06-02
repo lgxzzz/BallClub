@@ -179,153 +179,82 @@ public class DBManger {
         return mUsers;
     }
 
-    //添加商品信息
-    public void insertStore(Store store){
+    //获取新闻信息
+    public List<News> getAllNews(){
+
+        List<News> mNewsList = new ArrayList<>();
+        try{
+            SQLiteDatabase db = mDBHelper.getWritableDatabase();
+            Cursor cursor = db.query(SQLiteDbHelper.TAB_NEWS,null,null,null,null,null,null);
+            while (cursor.moveToNext()){
+                String NEWS_ID = cursor.getString(cursor.getColumnIndex("NEWS_ID"));
+                String NEWS_TYPE = cursor.getString(cursor.getColumnIndex("NEWS_TYPE"));
+                String NEWS_CONTEX = cursor.getString(cursor.getColumnIndex("NEWS_CONTEX"));
+                String NEWS_URL = cursor.getString(cursor.getColumnIndex("NEWS_URL"));
+                String NEWS_PIC_ID = cursor.getString(cursor.getColumnIndex("NEWS_PIC_ID"));
+
+                News pest = new News();
+                pest.setNEWS_ID(NEWS_ID);
+                pest.setNEWS_TYPE(NEWS_TYPE);
+                pest.setNEWS_CONTEX(NEWS_CONTEX);
+                pest.setNEWS_PIC_ID(Integer.parseInt(NEWS_PIC_ID));
+                pest.setNEWS_URL(NEWS_URL);
+
+                mNewsList.add(pest);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return mNewsList;
+    }
+
+    //根据条件查询新闻信息
+    public List<News> getNewsByKey(String key){
+        List<News> mNewsList = new ArrayList<>();
+        try{
+            SQLiteDatabase db = mDBHelper.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM News WHERE NEWS_TYPE LIKE '%" + key + "%'", null);
+            while (cursor.moveToNext()){
+                String NEWS_ID = cursor.getString(cursor.getColumnIndex("NEWS_ID"));
+                String NEWS_TYPE = cursor.getString(cursor.getColumnIndex("NEWS_TYPE"));
+                String NEWS_CONTEX = cursor.getString(cursor.getColumnIndex("NEWS_CONTEX"));
+                String NEWS_URL = cursor.getString(cursor.getColumnIndex("NEWS_URL"));
+                String NEWS_PIC_ID = cursor.getString(cursor.getColumnIndex("NEWS_PIC_ID"));
+
+                News pest = new News();
+                pest.setNEWS_ID(NEWS_ID);
+                pest.setNEWS_TYPE(NEWS_TYPE);
+                pest.setNEWS_CONTEX(NEWS_CONTEX);
+                pest.setNEWS_PIC_ID(Integer.parseInt(NEWS_PIC_ID));
+                pest.setNEWS_URL(NEWS_URL);
+
+                mNewsList.add(pest);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return mNewsList;
+    }
+
+    //添加新闻
+    public void insertNews(News news){
         try{
             SQLiteDatabase db = mDBHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put("TREELESION_ID",lesion.getTREELESION_ID());
-            values.put("TREELESION_TYPE",lesion.getTREELESION_TYPE());
-            values.put("TREELESION_CONTEX",lesion.getTREELESION_CONTEX());
-            values.put("TREELESION_URL",lesion.getTREELESION_URL());
-            values.put("TREELESION_PIC_ID",lesion.getTREELESION_PIC_ID()+"");
-            long code = db.insert(SQLiteDbHelper.TAB_TREELESION,null,values);
+            values.put("NEWS_ID",news.getNEWS_ID());
+            values.put("NEWS_TYPE",news.getNEWS_TYPE());
+            values.put("NEWS_CONTEX",news.getNEWS_CONTEX());
+            values.put("NEWS_URL",news.getNEWS_URL());
+            values.put("NEWS_PIC_ID",news.getNEWS_PIC_ID()+"");
+            long code = db.insert(SQLiteDbHelper.TAB_NEWS,null,values);
             db.close();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    //获取所有害虫信息
-    public List<News> getAllPests(){
-        List<News> mPestsInfoList = new ArrayList<>();
-        try{
-            SQLiteDatabase db = mDBHelper.getWritableDatabase();
-            Cursor cursor = db.query(SQLiteDbHelper.TAB_PEST,null,null,null,null,null,null);
-            while (cursor.moveToNext()){
-                String PEST_ID = cursor.getString(cursor.getColumnIndex("PEST_ID"));
-                String PEST_TYPE = cursor.getString(cursor.getColumnIndex("PEST_TYPE"));
-                String PEST_CONTEX = cursor.getString(cursor.getColumnIndex("PEST_CONTEX"));
-                String PEST_URL = cursor.getString(cursor.getColumnIndex("PEST_URL"));
-                String PEST_PIC_ID = cursor.getString(cursor.getColumnIndex("PEST_PIC_ID"));
-
-                News pest = new News();
-                pest.setPEST_ID(PEST_ID);
-                pest.setPEST_TYPE(PEST_TYPE);
-                pest.setPEST_CONTEX(PEST_CONTEX);
-                pest.setPEST_PIC_ID(Integer.parseInt(PEST_PIC_ID));
-                pest.setPEST_URL(PEST_URL);
-
-                mPestsInfoList.add(pest);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return mPestsInfoList;
-    }
-
-    //根据条件查询树木病害信息
-    public List<TreeLesion> getAllTreeLesions(){
-        List<TreeLesion> mTreeLesionInfoList = new ArrayList<>();
-        try{
-            SQLiteDatabase db = mDBHelper.getWritableDatabase();
-            Cursor cursor = db.query(SQLiteDbHelper.TAB_TREELESION,null,null,null,null,null,null);
-            while (cursor.moveToNext()){
-                String TREELESION_ID = cursor.getString(cursor.getColumnIndex("TREELESION_ID"));
-                String TREELESION_TYPE = cursor.getString(cursor.getColumnIndex("TREELESION_TYPE"));
-                String TREELESION_CONTEX = cursor.getString(cursor.getColumnIndex("TREELESION_CONTEX"));
-                String TREELESION_URL = cursor.getString(cursor.getColumnIndex("TREELESION_URL"));
-                String TREELESION_PIC_ID = cursor.getString(cursor.getColumnIndex("TREELESION_PIC_ID"));
-
-                TreeLesion treeLesion = new TreeLesion();
-                treeLesion.setTREELESION_ID(TREELESION_ID);
-                treeLesion.setTREELESION_TYPE(TREELESION_TYPE);
-                treeLesion.setTREELESION_CONTEX(TREELESION_CONTEX);
-                treeLesion.setTREELESION_PIC_ID(Integer.parseInt(TREELESION_PIC_ID));
-                treeLesion.setTREELESION_URL(TREELESION_URL);
-
-                mTreeLesionInfoList.add(treeLesion);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return mTreeLesionInfoList;
-    }
-
-    //根据条件查询树木病害信息
-    public List<TreeLesion> getTreeLesionsByKey(String key){
-        List<TreeLesion> mTreeLesionInfoList = new ArrayList<>();
-        try{
-            SQLiteDatabase db = mDBHelper.getWritableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM TreeLesions WHERE TREELESION_TYPE LIKE '%" + key + "%'", null);
-            while (cursor.moveToNext()){
-                String TREELESION_ID = cursor.getString(cursor.getColumnIndex("TREELESION_ID"));
-                String TREELESION_TYPE = cursor.getString(cursor.getColumnIndex("TREELESION_TYPE"));
-                String TREELESION_CONTEX = cursor.getString(cursor.getColumnIndex("TREELESION_CONTEX"));
-                String TREELESION_URL = cursor.getString(cursor.getColumnIndex("TREELESION_URL"));
-                String TREELESION_PIC_ID = cursor.getString(cursor.getColumnIndex("TREELESION_PIC_ID"));
-
-                TreeLesion treeLesion = new TreeLesion();
-                treeLesion.setTREELESION_ID(TREELESION_ID);
-                treeLesion.setTREELESION_TYPE(TREELESION_TYPE);
-                treeLesion.setTREELESION_CONTEX(TREELESION_CONTEX);
-                treeLesion.setTREELESION_PIC_ID(Integer.parseInt(TREELESION_PIC_ID));
-                treeLesion.setTREELESION_URL(TREELESION_URL);
-                mTreeLesionInfoList.add(treeLesion);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return mTreeLesionInfoList;
-    }
-
-    //根据条件查询害虫信息
-    public List<News> getPestsByKey(String key){
-        List<News> mPestsInfoList = new ArrayList<>();
-        try{
-            SQLiteDatabase db = mDBHelper.getWritableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM Pest WHERE PEST_TYPE LIKE '%" + key + "%'", null);
-            while (cursor.moveToNext()){
-                String PEST_ID = cursor.getString(cursor.getColumnIndex("PEST_ID"));
-                String PEST_TYPE = cursor.getString(cursor.getColumnIndex("PEST_TYPE"));
-                String PEST_CONTEX = cursor.getString(cursor.getColumnIndex("PEST_CONTEX"));
-                String PEST_URL = cursor.getString(cursor.getColumnIndex("PEST_URL"));
-                String PEST_PIC_ID = cursor.getString(cursor.getColumnIndex("PEST_PIC_ID"));
-
-                News pest = new News();
-                pest.setPEST_ID(PEST_ID);
-                pest.setPEST_TYPE(PEST_TYPE);
-                pest.setPEST_CONTEX(PEST_CONTEX);
-                pest.setPEST_PIC_ID(Integer.parseInt(PEST_PIC_ID));
-                pest.setPEST_URL(PEST_URL);
-
-                mPestsInfoList.add(pest);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return mPestsInfoList;
-    }
-
-    //添加害虫
-    public void insertPest(News pest){
-        try{
-            SQLiteDatabase db = mDBHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("PEST_ID",pest.getPEST_ID());
-            values.put("PEST_TYPE",pest.getPEST_TYPE());
-            values.put("PEST_CONTEX",pest.getPEST_CONTEX());
-            values.put("PEST_URL",pest.getPEST_URL());
-            values.put("PEST_PIC_ID",pest.getPEST_PIC_ID()+"");
-            long code = db.insert(SQLiteDbHelper.TAB_PEST,null,values);
-            db.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    //存储优惠劵数据
-    public void saveStore(Store bean) {
+    //添加店铺数据
+    public void insertStore(Store bean) {
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
         db.execSQL("INSERT INTO store(name, type,money, start, ends,area,indexs) " +
                 "VALUES ('" + bean.getName()
@@ -339,6 +268,33 @@ public class DBManger {
 
 
     }
+
+    //根据条件查询新闻信息
+    public List<Store> getStoreByKey(String key){
+        List<Store> records = new ArrayList<Store>();
+        try{
+            SQLiteDatabase db = mDBHelper.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM Store WHERE name LIKE '%" + key + "%'", null);
+            while (cursor.moveToNext()){
+                Store bean = new Store();
+                bean.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                bean.setName(cursor.getString(cursor.getColumnIndex("name")));
+                bean.setType(cursor.getString(cursor.getColumnIndex("type")));
+
+                bean.setMoney(cursor.getString(cursor.getColumnIndex("money")));
+                bean.setprice(cursor.getString(cursor.getColumnIndex("start")));
+                bean.setpicture(cursor.getString(cursor.getColumnIndex("ends")));
+                bean.setBianhao(cursor.getString(cursor.getColumnIndex("area")));//area-原bianhao
+                bean.setIndex(cursor.getString(cursor.getColumnIndex("indexs")));
+
+                records.add(bean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return records;
+    }
+
     /**
      * 获取所有商品数据
      *
@@ -370,16 +326,16 @@ public class DBManger {
     }
 
     public void initDefaultData(){
-        List<TreeLesion> mTreeLesionInfoList = mDataBase.mTreeLesionInfoList;
-        for (int i =0;i<mTreeLesionInfoList.size();i++){
-            TreeLesion treeLesion = mTreeLesionInfoList.get(i);
-            insertTreeLesion(treeLesion);
+        List<Store> mStoreList = mDataBase.mStoreList;
+        for (int i =0;i<mStoreList.size();i++){
+            Store store = mStoreList.get(i);
+            insertStore(store);
         }
 
-        List<News> mPestInfoList = mDataBase.mPestInfoList;
-        for (int i =0;i<mPestInfoList.size();i++){
-            News pest = mPestInfoList.get(i);
-            insertPest(pest);
+        List<News> mNewsList = mDataBase.mNewsList;
+        for (int i =0;i<mNewsList.size();i++){
+            News news = mNewsList.get(i);
+            insertNews(news);
         }
     }
 

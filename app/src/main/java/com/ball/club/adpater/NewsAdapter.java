@@ -60,15 +60,15 @@ public class NewsAdapter extends BaseAdapter {
         }else{
             holer = (NewsAdapter.ViewHoler) view.getTag();
         }
-        holer.mPic.setBackgroundResource(msgInfo.getPEST_PIC_ID());
-        holer.mTitle.setText(msgInfo.getPEST_TYPE());
-        holer.mContent.setText(msgInfo.getPEST_CONTEX());
+        holer.mPic.setBackgroundResource(msgInfo.getNEWS_PIC_ID());
+        holer.mTitle.setText(msgInfo.getNEWS_TYPE());
+        holer.mContent.setText(msgInfo.getNEWS_CONTEX());
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(mContext,WebViewActivity.class);
-                intent.putExtra("url",msgInfo.getPEST_URL());
+                intent.putExtra("url",msgInfo.getNEWS_URL());
                 mContext.startActivity(intent);
             }
         });

@@ -1,252 +1,168 @@
 package com.ball.club.fragement;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
+import com.ball.club.ClothingActivity;
 import com.ball.club.R;
-import com.ball.club.util.DecodeUtil;
+import com.ball.club.adpater.CommonAdapter;
+import com.ball.club.adpater.StoreAdapter;
+import com.ball.club.adpater.ViewHolder;
+import com.ball.club.bean.Menu;
+import com.ball.club.bean.Store;
+import com.ball.club.data.DBManger;
+import com.ball.club.util.GlideImageLoader;
+import com.ball.club.view.ObservableScrollView;
+import com.ball.club.view.RoundCornerDialog;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import static android.app.Activity.RESULT_OK;
+import java.util.ArrayList;
+import java.util.List;
 
-/***
- * 图片解析界面
- *
- * */
-public class BuyFragment extends Fragment {
 
-    public static final int REQUEST_TAKE_PHOTO_CODE = 101;
+public class BuyFragment extends Fragment {//商家
+    Banner banner;
+    EditText followEdit;
+    ImageView searchImage;
+    ImageView add;
+    RecyclerView listView_store;
+    LinearLayout scrollView;
+    ImageView ivAnimation;
+    LinearLayout llAnimation;
 
-    ImageView mSelectImg;
-    TextView mDecodeTv;
-    Button mSelecLocalPicBtn;
-    Button mTakePicBtn;
+    private List<Store> list_store;
+    private List<Integer> list_img = new ArrayList<Integer>();
+    StoreAdapter mStoreAdapter;
 
-    private Uri mCutUri;
-
-    private DecodeUtil mDecodeUtil;
-
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragement_decode, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_buy, container, false);
         initView(view);
+        initdata();
+        list_store = DBManger.getInstance(getActivity()).getAllStore();
+        listView_store.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        setContentCommonadapter();
+
+
+        followEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    list_store = DBManger.getInstance(getActivity()).getStoreByKey(s.toString());
+                    mStoreAdapter.updateAll(list_store);
+                } else {
+                    list_store = DBManger.getInstance(getActivity()).getAllStore();
+                    mStoreAdapter.updateAll(list_store);
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
 
-    public static BuyFragment getInstance() {
-        return new BuyFragment();
+    public void initView(View view){
+        banner = view.findViewById(R.id.banner);
+        followEdit = view.findViewById(R.id.follow_edit);
+        searchImage = view.findViewById(R.id.search_image);
+        add = view.findViewById(R.id.add);
+        listView_store = view.findViewById(R.id.lv_store);
+        scrollView = view.findViewById(R.id.scrollView);
+        ivAnimation = view.findViewById(R.id.iv_animation);
+        llAnimation = view.findViewById(R.id.ll_animation);
     }
 
-    public void initView(View view){
-        mSelectImg = view.findViewById(R.id.select_pic_img);
-        mDecodeTv = view.findViewById(R.id.decode_res_tv);
-        mSelecLocalPicBtn = view.findViewById(R.id.select_pic_local);
-        mTakePicBtn = view.findViewById(R.id.select_pic_photo);
+    private void setContentCommonadapter() {
+        mStoreAdapter = new StoreAdapter(getActivity(), list_store);
 
-        mSelecLocalPicBtn.setOnClickListener(new View.OnClickListener() {
+        listView_store.setAdapter(mStoreAdapter);
+        mStoreAdapter.setOnItemClickListener(new StoreAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 1);
+            public void onItemClick(StoreAdapter.ViewHolder holder, Store store) {
+                int index = Integer.parseInt(store.getIndex());
+                Intent intent = new Intent(getContext(), ClothingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("DATA", store);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
+    }
 
-        mTakePicBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePhoto();
+    DialogInterface.OnKeyListener keylistener = new DialogInterface.OnKeyListener() {
+        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+                return true;
+            } else {
+                return false;
             }
-        });
-
-        mDecodeUtil = new DecodeUtil();
-        mDecodeUtil.setListener(new DecodeUtil.IDecodeListener() {
-            @Override
-            public void onDecode(final String result) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDecodeTv.setText(result);
-                    }
-                },1000);
-
-            }
-        });
+        }
     };
 
-    public void initData(){
+    private void initdata() {
+        list_img.add(R.mipmap.five);
+        list_img.add(R.mipmap.one);
+        list_img.add(R.mipmap.two);
+        list_img.add(R.mipmap.three);
+        list_img.add(R.mipmap.four);
 
+        banner.setImageLoader(new GlideImageLoader());
+        banner.setImages(list_img);
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        banner.setIndicatorGravity(BannerConfig.CENTER);
+        banner.start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initData();
-    }
-
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case 1: //从相册图片后返回的uri
-                    //启动裁剪
-                    Uri uri= data.getData();
-                    startActivityForResult(CutForPhoto(uri),2);
-                    break;
-                case 2:
-                    //本地裁剪
-                    Bitmap bm1 = null;
-                    try {
-                        bm1 = BitmapFactory.decodeStream(
-                                getContext().getContentResolver().openInputStream(mCutUri));
-                        if (bm1!=null){
-                            mSelectImg.setImageBitmap(bm1);
-                            mDecodeUtil.decode(bm1);
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case REQUEST_TAKE_PHOTO_CODE:
-                    Bitmap bm = null;
-                    try {
-                        bm = BitmapFactory.decodeStream(
-                                getContext().getContentResolver().openInputStream(mCutUri));
-                        bm = zoomImg(bm,500,500);
-                        if (bm!=null){
-                            mSelectImg.setImageBitmap(bm);
-                            mDecodeUtil.decode(bm);
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //更新界面
+                list_store = DBManger.getInstance(getActivity()).getAllStore();
+                mStoreAdapter.updateAll(list_store);
             }
-        }
+        });
     }
-
-
-    /**
-     * 图片裁剪
-     * @param uri
-     * @return
-     */
-    @NonNull
-    private Intent CutForPhoto(Uri uri) {
-        try {
-            //直接裁剪
-            Intent intent = new Intent("com.android.camera.action.CROP");
-            //设置裁剪之后的图片路径文件
-            File cutfile = new File(Environment.getExternalStorageDirectory().getPath(),
-                    "cutcamera.png"); //随便命名一个
-            if (cutfile.exists()){ //如果已经存在，则先删除,这里应该是上传到服务器，然后再删除本地的，没服务器，只能这样了
-                cutfile.delete();
-            }
-            cutfile.createNewFile();
-            //初始化 uri
-            Uri imageUri = uri; //返回来的 uri
-            Uri outputUri = null; //真实的 uri
-            outputUri =  Uri.fromFile(cutfile);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                //步骤二：Android 7.0及以上获取文件 Uri
-//                mCutUri= FileProvider.getUriForFile(getActivity(), "com.ball.club", cutfile);
-//            } else {
-//                //步骤三：获取文件Uri
-//                mCutUri = Uri.fromFile(cutfile);
-//            }
-            mCutUri = outputUri;
-            // crop为true是设置在开启的intent中设置显示的view可以剪裁
-            intent.putExtra("crop",true);
-            // aspectX,aspectY 是宽高的比例，这里设置正方形
-            intent.putExtra("aspectX",1);
-            intent.putExtra("aspectY",1);
-            //设置要裁剪的宽高
-            intent.putExtra("outputX", 200); //200dp
-            intent.putExtra("outputY",200);
-            intent.putExtra("scale",true);
-            //如果图片过大，会导致oom，这里设置为false
-            intent.putExtra("return-data",false);
-            if (imageUri != null) {
-                intent.setDataAndType(imageUri, "image/*");
-            }
-            if (outputUri != null) {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            }
-            intent.putExtra("noFaceDetection", true);
-            //压缩图片
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-            return intent;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    private void takePhoto() {
-        // 步骤一：创建存储照片的文件
-        String path = getContext().getFilesDir() + File.separator + "images" + File.separator;
-        File file = new File(path, "test.jpg");
-        if(!file.getParentFile().exists())
-            file.getParentFile().mkdirs();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //步骤二：Android 7.0及以上获取文件 Uri
-            mCutUri = FileProvider.getUriForFile(getActivity(), "com.ball.club", file);
-        } else {
-            //步骤三：获取文件Uri
-            mCutUri = Uri.fromFile(file);
-        }
-        //步骤四：调取系统拍照
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCutUri);
-        startActivityForResult(intent, REQUEST_TAKE_PHOTO_CODE);
-    }
-
-
-    // 缩放图片
-    public static Bitmap zoomImg(Bitmap bm, int newWidth ,int newHeight){
-        // 获得图片的宽高
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        // 得到新的图片
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
-        return newbm;
-    }
-
-    Handler mHandler = new Handler();
 }
+
