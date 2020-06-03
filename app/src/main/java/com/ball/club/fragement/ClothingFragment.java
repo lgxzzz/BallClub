@@ -29,19 +29,12 @@ import java.util.Date;
 public class ClothingFragment extends Fragment {
     //服装详情页面
     Store store;
-    @BindView(R.id.goodname)
     TextView goodname;
-    @BindView(R.id.type)
     TextView type;
-    @BindView(R.id.good_picture)
     ImageView goodPicture;
-    @BindView(R.id.detail)
     TextView detail;
-    @BindView(R.id.btn_take_order)
     Button btnTakeOrder;
-    @BindView(R.id.btn_take_dingdan)
     Button btnTakeDingdan;
-    @BindView(R.id.bottom_layout)
     LinearLayout bottomLayout;
 
     private User user;
@@ -50,7 +43,7 @@ public class ClothingFragment extends Fragment {
         final View view = inflater.inflate(R.layout.activity_good_detail, container, false);
         store = (Store) getActivity().getIntent().getSerializableExtra("DATA");
         user = DBManger.getInstance(getContext()).mUser;
-
+        initView(view);
         goodname.setText(store.getMoney());
         type.setText(store.getName() + store.getType() + store.getBianhao());
         Glide.with(getActivity()).load(store.getpicture()).into(goodPicture);
@@ -83,6 +76,14 @@ public class ClothingFragment extends Fragment {
     }
 
     public void initView(View view){
+
+        goodname = view.findViewById(R.id.goodname);
+        type = view.findViewById(R.id.type);
+        goodPicture = view.findViewById(R.id.good_picture);
+        detail = view.findViewById(R.id.detail);
+        btnTakeOrder = view.findViewById(R.id.btn_take_order);
+        btnTakeDingdan = view.findViewById(R.id.btn_take_dingdan);
+        bottomLayout = view.findViewById(R.id.bottom_layout);
 
     }
 

@@ -9,60 +9,39 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ball.club.bean.Store;
+import com.ball.club.bean.StoreDingDan;
+import com.ball.club.bean.User;
+import com.ball.club.data.DBManger;
 import com.bumptech.glide.Glide;
-import com.lost.administrator.md.db.DbSqliteHelper;
-import com.lost.administrator.md.entity.EventBusBean;
-import com.lost.administrator.md.entity.Store;
-import com.lost.administrator.md.entity.StoreDingDan;
-import com.lost.administrator.md.utils.SharedPrefsUtils;
-
-import org.greenrobot.eventbus.EventBus;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class CollectionActivity extends AppCompatActivity {
 
-    @BindView(R.id.goodname)
     TextView goodname;
-    @BindView(R.id.guige)
     TextView guige;
-    @BindView(R.id.dian_price)
     TextView dianPrice;
-    @BindView(R.id.tuan_price)
     TextView tuanPrice;
-    @BindView(R.id.good_picture)
     ImageView goodPicture;
-    @BindView(R.id.detail)
     TextView detail;
-    @BindView(R.id.ccc)
     TextView ccc;
-    @BindView(R.id.tv_selected)
     TextView tvSelected;
-    @BindView(R.id.bbb)
     TextView bbb;
-    @BindView(R.id.tv_total)
     TextView tvTotal;
-    @BindView(R.id.iv_collect1)
     ImageView ivCollect1;
-    @BindView(R.id.iv_collect2)
     ImageView ivCollect2;
-    @BindView(R.id.btn_take_order)
     Button btnTakeOrder;
-    @BindView(R.id.bottom_layout)
     LinearLayout bottomLayout;
     Store store;
-private String user;
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
-        ButterKnife.bind(this);
-        user = SharedPrefsUtils.getString(CollectionActivity.this, "user");
+        user = DBManger.getInstance(this).mUser;
         store = (Store) getIntent().getSerializableExtra("DATA");
         goodname.setText(store.getName());
         guige.setText("1份/" + store.getMoney());
@@ -81,10 +60,9 @@ private String user;
 //            ivCollect1.setVisibility(View.VISIBLE);
 //        }
     }
-    @OnClick(R.id.btn_take_order)
     public void onClick() {
         StoreDingDan storeDingDan = new StoreDingDan();
-        storeDingDan.setUser(user);
+        storeDingDan.setUser(user.getUserId());
         storeDingDan.setStore_id(store.getId()+"");
         storeDingDan.setName(store.getName());
         storeDingDan.setMoney(store.getMoney());
@@ -93,10 +71,8 @@ private String user;
         storeDingDan.setpicture(store.getpicture());
         storeDingDan.setBianhao(store.getBianhao());
         storeDingDan.setTime(longToDate());
-        DbSqliteHelper.getInstance(CollectionActivity.this).saveStoreDingDan(storeDingDan);
+        DBManger.getInstance(CollectionActivity.this).saveStoreDingDan(storeDingDan);
         Toast.makeText(CollectionActivity.this, "抢购成功!", Toast.LENGTH_SHORT).show();
-        EventBus.getDefault().post(
-                new EventBusBean("3"));
         finish();
     }
 
@@ -104,5 +80,23 @@ private String user;
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sd.format(date);
+    }
+
+    public void initView(){
+
+        goodname = findViewById(R.id.goodname);
+        guige = findViewById(R.id.guige);
+        dianPrice = findViewById(R.id.dian_price);
+        tuanPrice = findViewById(R.id.tuan_price);
+        goodPicture = findViewById(R.id.good_picture);
+        detail = findViewById(R.id.detail);
+        ccc = findViewById(R.id.ccc);
+        tvSelected = findViewById(R.id.tv_selected);
+        bbb = findViewById(R.id.bbb);
+        tvTotal = findViewById(R.id.tv_total);
+        ivCollect1 = findViewById(R.id.iv_collect1);
+        ivCollect2 = findViewById(R.id.iv_collect2);
+        btnTakeOrder = findViewById(R.id.btn_take_order);
+        bottomLayout = findViewById(R.id.bottom_layout);
     }
 }

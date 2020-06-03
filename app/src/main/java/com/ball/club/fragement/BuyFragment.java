@@ -58,6 +58,10 @@ public class BuyFragment extends Fragment {//商家
     private List<Integer> list_img = new ArrayList<Integer>();
     StoreAdapter mStoreAdapter;
 
+    public static BuyFragment getInstance() {
+        return new BuyFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

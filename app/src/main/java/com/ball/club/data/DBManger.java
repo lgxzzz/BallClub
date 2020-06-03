@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.ball.club.bean.News;
 import com.ball.club.bean.Store;
+import com.ball.club.bean.StoreDingDan;
 import com.ball.club.bean.User;
 import com.ball.club.util.SharedPreferenceUtil;
 
@@ -323,6 +324,24 @@ public class DBManger {
         }
 
         return records;
+    }
+
+    //存储商品订单数据
+    public void saveStoreDingDan(StoreDingDan bean) {
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        db.execSQL("INSERT INTO storedingdan(user,store_id,name, type,money, start, ends,bianhao,time) " +
+                "VALUES ('" + bean.getUser()
+                + "', '" + bean.getStore_id()
+                + "', '" + bean.getName()
+                + "', '" + bean.getType()
+                + "', '" + bean.getMoney()
+                + "', '" + bean.getprice()
+                + "', '" + bean.getpicture()
+                + "', '" + bean.getBianhao()//area-原bianhao
+                + "', '" + bean.getTime()
+                + "')");
+
+
     }
 
     public void initDefaultData(){
