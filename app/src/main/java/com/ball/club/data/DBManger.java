@@ -284,7 +284,7 @@ public class DBManger {
 
                 bean.setMoney(cursor.getString(cursor.getColumnIndex("money")));
                 bean.setprice(cursor.getString(cursor.getColumnIndex("start")));
-                bean.setpicture(cursor.getString(cursor.getColumnIndex("ends")));
+                bean.setpicture(Integer.parseInt(cursor.getString(cursor.getColumnIndex("ends"))));
                 bean.setBianhao(cursor.getString(cursor.getColumnIndex("area")));//area-原bianhao
                 bean.setIndex(cursor.getString(cursor.getColumnIndex("indexs")));
 
@@ -314,7 +314,7 @@ public class DBManger {
 
                 bean.setMoney(cursor.getString(cursor.getColumnIndex("money")));
                 bean.setprice(cursor.getString(cursor.getColumnIndex("start")));
-                bean.setpicture(cursor.getString(cursor.getColumnIndex("ends")));
+                bean.setpicture(Integer.parseInt(cursor.getString(cursor.getColumnIndex("ends"))));
                 bean.setBianhao(cursor.getString(cursor.getColumnIndex("area")));//area-原bianhao
                 bean.setIndex(cursor.getString(cursor.getColumnIndex("indexs")));
 

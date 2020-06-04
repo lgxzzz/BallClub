@@ -128,8 +128,8 @@ public class ViewHolder {
                 .setRadius(10)
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setUseMemCache(true)
-                .setFailureDrawableId(R.drawable.shibie)
-                .setLoadingDrawableId(R.drawable.shibie)
+                .setFailureDrawableId(R.drawable.qiuchang)
+                .setLoadingDrawableId(R.drawable.qiuchang)
                 .build();
         x.image().loadDrawable(url, options, new Callback.CommonCallback<Drawable>() {
             @Override

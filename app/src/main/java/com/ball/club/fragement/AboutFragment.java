@@ -23,9 +23,7 @@ public class AboutFragment extends Fragment {
     TextView mUserTel;
     TextView mUserMail;
     Button mUpdateBtn;
-    Button mTaskCurrentBtn;
-    Button mTaskHistoryBtn;
-    Button mSearchElevatorBtn;
+    Button mStoreHistoryBtn;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,9 +49,7 @@ public class AboutFragment extends Fragment {
         mUserTel = view.findViewById(R.id.user_tel);
         mUserMail = view.findViewById(R.id.user_mail);
         mUpdateBtn = view.findViewById(R.id.user_update_btn);
-        mTaskCurrentBtn = view.findViewById(R.id.task_current_btn);
-        mTaskHistoryBtn = view.findViewById(R.id.task_history_btn);
-        mSearchElevatorBtn = view.findViewById(R.id.search_elevator_btn);
+        mStoreHistoryBtn = view.findViewById(R.id.store_his_btn);
     };
 
     public void initData() {
@@ -67,18 +63,8 @@ public class AboutFragment extends Fragment {
 
             }
         });
-        mTaskCurrentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(getContext(), TaskActivity.class);
-//                Bundle b = new Bundle();
-//                b.putSerializable("state","当前任务");
-//                intent.putExtras(b);
-//                getContext().startActivity(intent);
-            }
-        });
-        mTaskHistoryBtn.setOnClickListener(new View.OnClickListener() {
+
+        mStoreHistoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent();
@@ -90,13 +76,6 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        mSearchElevatorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(getContext(), SearchElevatorActivity.class);
-//                getContext().startActivity(intent);
-            }
-        });
+
     }
 }

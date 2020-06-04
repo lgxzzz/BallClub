@@ -35,7 +35,7 @@ public class NewsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragement_pest, container, false);
+        View view =  inflater.inflate(R.layout.fragement_news, container, false);
         initView(view);
 
         return view;

@@ -7,12 +7,12 @@ import java.io.Serializable;
  */
 public class Store implements Serializable {
     private  int id;
-    private String name,type,money,price,picture,bianhao,index;
-
+    private String name,type,money,price,bianhao,index;
+    private int picture;
     public Store() {
     }
 
-    public Store(int id, String name, String type, String money, String price, String picture, String bianhao) {
+    public Store(int id, String name, String type, String money, String price, int picture, String bianhao) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -62,11 +62,11 @@ public class Store implements Serializable {
         this.price = price;
     }
 
-    public String getpicture() {
+    public int getpicture() {
         return picture;
     }
 
-    public void setpicture(String picture) {
+    public void setpicture(int picture) {
         this.picture = picture;
     }
 
@@ -86,11 +86,11 @@ public class Store implements Serializable {
         this.price = price;
     }
 
-    public String getPicture() {
+    public int getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(int picture) {
         this.picture = picture;
     }
 

@@ -7,13 +7,13 @@ import java.io.Serializable;
  */
 public class StoreDingDan implements Serializable {
     private  int id;
-    private String user, store_id,name,type,money,price,picture,bianhao,time;
-
+    private String user, store_id,name,type,money,price,bianhao,time;
+    private int picture;
     public StoreDingDan() {
     }
 
 
-    public StoreDingDan(int id, String store_id, String user, String name, String type, String money, String price, String picture, String bianhao, String time) {
+    public StoreDingDan(int id, String store_id, String user, String name, String type, String money, String price, int picture, String bianhao, String time) {
         this.id = id;
         this.store_id = store_id;
         this.user = user;
@@ -74,11 +74,11 @@ public class StoreDingDan implements Serializable {
         this.price = price;
     }
 
-    public String getpicture() {
+    public int getpicture() {
         return picture;
     }
 
-    public void setpicture(String picture) {
+    public void setpicture(int picture) {
         this.picture = picture;
     }
 
