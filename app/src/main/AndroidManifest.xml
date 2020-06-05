@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         >
-        <meta-data android:name="com.amap.api.v2.apikey" android:value="8a6bc6010f8adc089fe82d8bec715b30">
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="0a145ca4d65b910a3dff38c175542abe">
         </meta-data>
         <activity android:name=".SplashActivity"
             android:windowSoftInputMode="adjustPan"
@@ -43,6 +43,8 @@
         <activity android:name=".WebViewActivity"/>
         <activity android:name=".ClothingActivity"/>
         <activity android:name=".CollectionActivity"/>
+        <activity android:name=".DingdanActivity"/>
+        <activity android:name=".CourtPlaceActivity"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.ball.club"

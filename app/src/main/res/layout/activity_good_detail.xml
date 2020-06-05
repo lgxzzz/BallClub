@@ -130,6 +130,7 @@
             android:background="@drawable/btn_bg4"
             android:text="收藏"
             android:textColor="@color/white"
+            android:visibility="gone"
             android:textSize="20dp" />
     </LinearLayout>
 

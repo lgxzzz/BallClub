@@ -26,12 +26,13 @@
             />
     </LinearLayout>
     <RadioGroup
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_below="@id/ll_title"
         android:id="@+id/radioGroup_order"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        >
         <RadioButton
             android:id="@+id/rb_allOrder_order"
             android:background="@drawable/select_btn_login"
@@ -63,10 +64,6 @@
         android:layout_height="match_parent">
 
     </android.support.v4.view.ViewPager>
-
-
-
-
 
 
 </RelativeLayout>

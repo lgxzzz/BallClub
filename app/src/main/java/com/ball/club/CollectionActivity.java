@@ -3,6 +3,7 @@ package com.ball.club;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ public class CollectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
+        initView();
         user = DBManger.getInstance(this).mUser;
         store = (Store) getIntent().getSerializableExtra("DATA");
         goodname.setText(store.getName());
@@ -51,16 +53,15 @@ public class CollectionActivity extends AppCompatActivity {
         ccc.setText("￥" + store.getprice());
         bbb.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         bbb.setText("￥" + store.getMoney());
-//        CollectionBean collect = DbSqliteHelper.getInstance(CollectionActivity.this).findColl(store.getId()+"", user);
-//        if (!TextUtils.isEmpty(collect.getName())){
-//            ivCollect2.setVisibility(View.VISIBLE);
-//            ivCollect1.setVisibility(View.GONE);
-//        }else {
-//            ivCollect2.setVisibility(View.GONE);
-//            ivCollect1.setVisibility(View.VISIBLE);
-//        }
+        btnTakeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveStoreDingDan();
+            }
+        });
+
     }
-    public void onClick() {
+    public void saveStoreDingDan() {
         StoreDingDan storeDingDan = new StoreDingDan();
         storeDingDan.setUser(user.getUserId());
         storeDingDan.setStore_id(store.getId()+"");

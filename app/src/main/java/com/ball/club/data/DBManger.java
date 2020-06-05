@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.ball.club.bean.News;
 import com.ball.club.bean.Store;
@@ -343,6 +344,46 @@ public class DBManger {
 
 
     }
+
+    /**
+     * 获取所有商品订单数据
+     *
+     * @return
+     */
+    public List<StoreDingDan> getAllStoreDingDan(String user) {
+        List<StoreDingDan> records = new ArrayList<StoreDingDan>();
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        if (db != null) {
+            Cursor cursor =null;
+            if (TextUtils.isEmpty(user)){
+                cursor = db.rawQuery("SELECT * FROM storedingdan", null);
+
+            }else {
+                cursor = db.rawQuery("SELECT * FROM storedingdan WHERE user = ?", new String[]{user});
+
+            }
+            while (cursor.moveToNext()) {
+                StoreDingDan bean = new StoreDingDan();
+                bean.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                bean.setUser(cursor.getString(cursor.getColumnIndex("user")));
+                bean.setStore_id(cursor.getString(cursor.getColumnIndex("store_id")));
+
+                bean.setName(cursor.getString(cursor.getColumnIndex("name")));
+                bean.setType(cursor.getString(cursor.getColumnIndex("type")));
+
+                bean.setMoney(cursor.getString(cursor.getColumnIndex("money")));
+                bean.setprice(cursor.getString(cursor.getColumnIndex("start")));
+                bean.setpicture(Integer.parseInt(cursor.getString(cursor.getColumnIndex("ends"))));
+                bean.setBianhao(cursor.getString(cursor.getColumnIndex("bianhao")));//area-原bianhao
+                bean.setTime(cursor.getString(cursor.getColumnIndex("time")));
+
+                records.add(bean);
+            }
+            cursor.close();
+        }
+        return records;
+    }
+
 
     public void initDefaultData(){
         List<Store> mStoreList = mDataBase.mStoreList;

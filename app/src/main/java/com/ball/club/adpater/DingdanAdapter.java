@@ -11,7 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.ball.club.R;
-import com.ball.club.bean.Store;
+import com.ball.club.bean.StoreDingDan;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -21,19 +21,19 @@ import java.util.List;
 /**
  * Created
  */
-public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
+public class DingdanAdapter extends RecyclerView.Adapter<DingdanAdapter.ViewHolder> {
     private LayoutInflater mLayoutInflater;
-    protected List<Store> mListContentData;
+    protected List<StoreDingDan> mListContentData;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
     //定义接口
     public interface OnItemClickListener {
-        void onItemClick(ViewHolder holder, Store store);
+        void onItemClick(ViewHolder holder, StoreDingDan store);
 
     }
     public interface OnItemLongClickListener {
-        void onItemLongClick(ViewHolder holder, Store store);
+        void onItemLongClick(ViewHolder holder, StoreDingDan store);
 
     }
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -42,14 +42,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.onItemLongClickListener = listener;
     }
-    public StoreAdapter(Context context, List<Store> datas) {
+
+    public DingdanAdapter(Context context, List<StoreDingDan> datas) {
         this.mListContentData = datas;
         this.mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
 
     }
 
-    public void updateAll(List<Store> mList) {
+    public void updateAll(List<StoreDingDan> mList) {
         this.mListContentData = mList;
         notifyDataSetChanged();
     }
@@ -66,7 +67,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     //绑定ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Store store = mListContentData.get(position);
+        StoreDingDan store = mListContentData.get(position);
 
 //设置图片圆角角度
         RoundedCorners roundedCorners = new RoundedCorners(20);
@@ -74,14 +75,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(800, 800);
 
         Glide.with(mContext).load(store.getpicture()).apply(options).into(holder.mImageView);
-        holder.mTitle.setText(store.getName()+store.getMoney()+"¥");
+        holder.mTitle.setText(store.getName());
         holder.mYueSale.setText(store.getType());
         holder.mPrice.setText(store.getprice());
         setOnListtener(holder, store);
     }
 
     //触发
-    protected void setOnListtener(final ViewHolder holder, final Store store) {
+    protected void setOnListtener(final ViewHolder holder, final StoreDingDan store) {
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,18 +92,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             });
 
         }
-
-
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (onItemLongClickListener != null) {
-                        onItemLongClickListener.onItemLongClick(holder, store);
-                    }
-                    return true;
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (onItemLongClickListener != null) {
+                    onItemLongClickListener.onItemLongClick(holder, store);
                 }
-            });
-
+                return true;
+            }
+        });
     }
 
     @Override

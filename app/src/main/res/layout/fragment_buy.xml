@@ -93,7 +93,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|center"
                             android:layout_marginRight="5dp"
-                            android:background="@mipmap/search_icom" />
+                            android:background="@mipmap/search_icom"
+                            />
 
                     </FrameLayout>
 
@@ -101,7 +102,9 @@
                         android:id="@+id/add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/add"></ImageView>
+                        android:background="@drawable/add"
+                        android:visibility="gone"
+                        ></ImageView>
                 </LinearLayout>
 
 

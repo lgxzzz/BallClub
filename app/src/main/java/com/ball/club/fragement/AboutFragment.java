@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ball.club.DingdanActivity;
 import com.ball.club.R;
 import com.ball.club.bean.User;
 import com.ball.club.data.DBManger;
@@ -67,12 +68,12 @@ public class AboutFragment extends Fragment {
         mStoreHistoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(getContext(), TaskActivity.class);
-//                Bundle b = new Bundle();
-//                b.putSerializable("state","历史任务");
-//                intent.putExtras(b);
-//                getContext().startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClass(getContext(), DingdanActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("state","历史订单");
+                intent.putExtras(b);
+                getContext().startActivity(intent);
             }
         });
 
